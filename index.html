@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TERRA Motsunabe Takeout Order</title>
   <style>
-    :root {
+    :root {	
       --bg: #050505;
       --card: rgba(10, 10, 10, 0.82);
       --line: rgba(212, 175, 55, 0.55);
@@ -543,11 +543,33 @@ ${notes}
 * Order is confirmed only after our reply.`;
 
       const box = document.getElementById("lineMessage");
-      box.style.display = "block";
-      box.textContent = message;
-    }
+box.style.display = "block";
+box.textContent = message;
 
-    calculate();
-  </script>
-</body>
-</html>
+sendToSheet({
+  name,
+  phone,
+  pickupDate: date,
+  pickupTime: time,
+  order: orderLines.join(" | "),
+  amount: Math.round(totals.amount),
+  tax: Math.round(totals.tax),
+  total: Math.round(totals.total),
+  notes
+});
+function sendToSheet(data) {
+
+  fetch("https://script.google.com/macros/s/AKfycbwYnq_CXQ7YJh6Ye61bXqrhIlVRcIopqMxnGEZhEnD-mIDqNiY2JXel6BEM0uQ64CY/exec", {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(result => {
+    alert("Order submitted successfully!");
+  })
+  .catch(error => {
+    console.error(error);
+    alert("Error sending order.");
+  });
+
+}
