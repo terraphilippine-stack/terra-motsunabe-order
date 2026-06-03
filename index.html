@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TERRA Motsunabe Takeout Order</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background: #050505;
+      color: #fff;
+    }
+    .page {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 22px 18px 32px;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .logo-box { text-align: center; }
+    .tagline {
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .tagline span { color: #d71920; }
+    .logo {
+      width: 100%;
+      max-width: 270px;
+      filter: invert(1);
+      background: transparent;
+    }
+    .title {
+      font-family: Georgia, serif;
+      letter-spacing: 0.16em;
+      color: #d6ad3a;
+      font-size: 36px;
+      margin: 10px 0 0;
+    }
+    .subtitle {
+      letter-spacing: 0.18em;
+      font-size: 18px;
+      margin-top: 4px;
+    }
+    .food-img {
+      width: 100%;
+      border-radius: 18px;
+      display: block;
+      box-shadow: 0 20px 40px rgba(0,0,0,.55);
+    }
+    .section-title {
+      color: #d6ad3a;
+      font-family: Georgia, serif;
+      font-size: 22px;
+      margin: 24px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(214,173,58,.65);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    input, select, textarea {
+      width: 100%;
+      background: #090909;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 6px;
+      padding: 14px;
+      font-size: 16px;
+    }
+    .order-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+    .order-table th {
+      text-align: left;
+      color: #ddd;
+      font-size: 13px;
+      padding: 10px 8px;
+      border-bottom: 1px solid #333;
+    }
+    .order-table td {
+      padding: 13px 8px;
+      border-bottom: 1px solid #242424;
+      vertical-align: middle;
+    }
+    .item-name { font-size: 17px; font-weight: 600; }
+    .item-sub { color: #bbb; font-size: 13px; margin-top: 4px; }
+    .price { white-space: nowrap; }
+    .qty-box {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 7px;
+    }
+    .qty-btn {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #555;
+      background: #101010;
+      color: #fff;
+      border-radius: 5px;
+      font-size: 20px;
+    }
+    .qty {
+      width: 42px;
+      text-align: center;
+      font-size: 18px;
+    }
+    .total-box {
+      margin-top: 22px;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 16px;
+      align-items: end;
+    }
+    .total-label {
+      color: #d6ad3a;
+      font-family: Georgia, serif;
+      letter-spacing: .12em;
+      font-size: 17px;
+    }
+    .total-price {
+      font-size: 34px;
+      font-family: Georgia, serif;
+      text-align: right;
+    }
+    button.submit {
+      width: 100%;
+      margin-top: 16px;
+      padding: 16px;
+      border: none;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #e0bd52, #b68a20);
+      color: #050505;
+      font-size: 22px;
+      font-family: Georgia, serif;
+      letter-spacing: .08em;
+      font-weight: bold;
+    }
+    .note {
+      text-align: center;
+      color: #ccc;
+      font-size: 13px;
+      margin-top: 14px;
+    }
+    #orderText {
+      margin-top: 18px;
+      display: none;
+      white-space: pre-wrap;
+      background: #101010;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 14px;
+      color: #eee;
+    }
+    .copy-btn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d6ad3a;
+      background: transparent;
+      color: #d6ad3a;
+      border-radius: 6px;
+      display: none;
+    }
+    @media (max-width: 720px) {
+      .hero, .grid, .total-box { grid-template-columns: 1fr; }
+      .title { font-size: 30px; }
+      .order-table th:nth-child(2), .order-table td:nth-child(2) { display: none; }
+      .item-name { font-size: 15px; }
+      .total-price { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="logo-box">
+        <img class="logo" src="terra_logo.png" alt="TERRA Logo" />
+        <h1 class="title">MOTSU NABE</h1>
+        <div class="subtitle">TAKEOUT ORDER</div>
+      </div>
+      <img class="food-img" src="motsunabe.jpg" alt="Motsunabe" />
+    </section>
+
+    <h2 class="section-title">CUSTOMER INFORMATION</h2>
+    <div class="grid">
+      <div><label>Name</label><input id="name" type="text" placeholder="Your name"></div>
+      <div><label>Phone Number</label><input id="phone" type="tel" placeholder="Phone number"></div>
+      <div><label>Pickup Date</label><input id="date" type="date"></div>
+      <div><label>Pickup Time</label><input id="time" type="time"></div>
+    </div>
+
+    <h2 class="section-title">ORDER</h2>
+    <table class="order-table">
+      <thead>
+        <tr><th>ITEM</th><th>FLAVOR / OPTION</th><th>PRICE</th><th style="text-align:right;">QTY</th></tr>
+      </thead>
+      <tbody>
+        <tr data-name="Motsunabe Set 2-3 pax" data-price="1300">
+          <td><div class="item-name">Motsunabe Set 2–3 pax</div><div class="item-sub">2–3 people</div></td>
+          <td><select class="option"><option>Miso</option><option>Soy Sauce</option></select></td>
+          <td class="price">1,300php</td>
+          <td><div class="qty-box"><button class="qty-btn minus">−</button><span class="qty">0</span><button class="qty-btn plus">+</button></div></td>
+        </tr>
+        <tr data-name="Extra Motsu (Beef Intestines)" data-price="640">
+          <td><div class="item-name">Extra Motsu (Beef Intestines)</div></td><td></td><td class="price">640php</td>
+          <td><div class="qty-box"><button class="qty-btn minus">−</button><span class="qty">0</span><button class="qty-btn plus">+</button></div></td>
+        </tr>
+        <tr data-name="Extra Vegetables" data-price="480">
+          <td><div class="item-name">Extra Vegetables</div></td><td></td><td class="price">480php</td>
+          <td><div class="qty-box"><button class="qty-btn minus">−</button><span class="qty">0</span><button class="qty-btn plus">+</button></div></td>
+        </tr>
+        <tr data-name="Extra Soup" data-price="120">
+          <td><div class="item-name">Extra Soup</div><div class="item-sub">Miso or Soy Sauce</div></td>
+          <td><select class="option"><option>Miso</option><option>Soy Sauce</option></select></td><td class="price">120php</td>
+          <td><div class="qty-box"><button class="qty-btn minus">−</button><span class="qty">0</span><button class="qty-btn plus">+</button></div></td>
+        </tr>
+        <tr data-name="Chanpon Noodles" data-price="250">
+          <td><div class="item-name">Chanpon Noodles</div></td><td></td><td class="price">250php</td>
+          <td><div class="qty-box"><button class="qty-btn minus">−</button><span class="qty">0</span><button class="qty-btn plus">+</button></div></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="total-box">
+      <div><label>Notes Optional</label><textarea id="notes" rows="3" placeholder="Allergies, requests, etc."></textarea></div>
+      <div><div class="total-label">TOTAL</div><div class="total-price"><span id="total">0</span>php</div></div>
+    </div>
+
+    <button class="submit" onclick="submitOrder()">SUBMIT ORDER</button>
+    <p class="note">* Your order is confirmed only after our reply.</p>
+    <div id="orderText"></div>
+    <button id="copyBtn" class="copy-btn" onclick="copyOrder()">COPY ORDER TEXT</button>
+  </main>
+
+  <script>
+    function updateTotal() {
+      let total = 0;
+      document.querySelectorAll('tr[data-price]').forEach(row => {
+        const price = Number(row.dataset.price);
+        const qty = Number(row.querySelector('.qty').textContent);
+        total += price * qty;
+      });
+      document.getElementById('total').textContent = total.toLocaleString();
+    }
+
+    document.querySelectorAll('.plus').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qty = btn.parentElement.querySelector('.qty');
+        qty.textContent = Number(qty.textContent) + 1;
+        updateTotal();
+      });
+    });
+
+    document.querySelectorAll('.minus').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qty = btn.parentElement.querySelector('.qty');
+        qty.textContent = Math.max(0, Number(qty.textContent) - 1);
+        updateTotal();
+      });
+    });
+
+    function submitOrder() {
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const notes = document.getElementById('notes').value;
+      let lines = [];
+      let total = 0;
+
+      document.querySelectorAll('tr[data-price]').forEach(row => {
+        const qty = Number(row.querySelector('.qty').textContent);
+        if (qty > 0) {
+          const name = row.dataset.name;
+          const price = Number(row.dataset.price);
+          const option = row.querySelector('.option') ? ' / ' + row.querySelector('.option').value : '';
+          lines.push(`・${name}${option} × ${qty} = ${(price * qty).toLocaleString()}php`);
+          total += price * qty;
+        }
+      });
+
+      const text = `【TERRA Motsunabe Takeout Order】\n\nName: ${name}\nPhone: ${phone}\nPickup Date: ${date}\nPickup Time: ${time}\n\nOrder:\n${lines.join('\n')}\n\nTotal: ${total.toLocaleString()}php\n\nNotes: ${notes}\n\n*Order is confirmed only after our reply.`;
+      document.getElementById('orderText').textContent = text;
+      document.getElementById('orderText').style.display = 'block';
+      document.getElementById('copyBtn').style.display = 'block';
+    }
+
+    function copyOrder() {
+      const text = document.getElementById('orderText').textContent;
+      navigator.clipboard.writeText(text);
+      alert('Order text copied. Please paste it to LINE.');
+    }
+  </script>
+</body>
+</html>
