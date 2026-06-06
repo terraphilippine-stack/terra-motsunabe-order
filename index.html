@@ -1,414 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TERRA Motsunabe Takeout Order</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      background: #050505;
-      color: #fff;
-    }
-    .page {
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 22px 18px 32px;
-    }
-    .hero {
-      display: grid;
-      grid-template-columns: 0.8fr 1.2fr;
-      gap: 18px;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    .logo-box { text-align: center; }
-    .tagline {
-      font-size: 18px;
-      letter-spacing: 0.08em;
-      margin-bottom: 6px;
-    }
-    .tagline span { color: #d71920; }
-    .logo {
-      width: 100%;
-      max-width: 270px;
-      filter: invert(1);
-      background: transparent;
-    }
-    .title {
-      font-family: Georgia, serif;
-      letter-spacing: 0.16em;
-      color: #d6ad3a;
-      font-size: 36px;
-      margin: 10px 0 0;
-    }
-    .subtitle {
-      letter-spacing: 0.18em;
-      font-size: 18px;
-      margin-top: 4px;
-    }
-    .food-img {
-      width: 100%;
-      border-radius: 18px;
-      display: block;
-      box-shadow: 0 20px 40px rgba(0,0,0,.55);
-    }
-    .section-title {
-      color: #d6ad3a;
-      font-family: Georgia, serif;
-      font-size: 22px;
-      margin: 24px 0 14px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(214,173,58,.65);
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    label {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
-    input, select, textarea {
-      width: 100%;
-      background: #090909;
-      color: #fff;
-      border: 1px solid #555;
-      border-radius: 6px;
-      padding: 14px;
-      font-size: 16px;
-    }
-    .order-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-    }
-    .order-table th {
-      text-align: left;
-      color: #ddd;
-      font-size: 13px;
-      padding: 10px 8px;
-      border-bottom: 1px solid #333;
-    }
-    .order-table td {
-      padding: 13px 8px;
-      border-bottom: 1px solid #242424;
-      vertical-align: middle;
-    }
-    .item-name { font-size: 17px; font-weight: 600; }
-    .item-sub { color: #bbb; font-size: 13px; margin-top: 4px; }
-    .price { white-space: nowrap; }
-    .qty-box {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 7px;
-    }
-    .qty-btn {
-      width: 34px;
-      height: 34px;
-      border: 1px solid #555;
-      background: #101010;
-      color: #fff;
-      border-radius: 5px;
-      font-size: 20px;
-    }
-    .qty {
-      width: 42px;
-      text-align: center;
-      font-size: 18px;
-    }
-    .total-box {
-      margin-top: 22px;
-      border: 1px solid #444;
-      border-radius: 8px;
-      padding: 16px;
-      display: grid;
-      grid-template-columns: 1fr 220px;
-      gap: 16px;
-      align-items: end;
-    }
-    .total-label {
-      color: #d6ad3a;
-      font-family: Georgia, serif;
-      letter-spacing: .12em;
-      font-size: 17px;
-    }
-    .total-price {
-      font-size: 34px;
-      font-family: Georgia, serif;
-      text-align: right;
-    }
-    button.submit {
-      width: 100%;
-      margin-top: 16px;
-      padding: 16px;
-      border: none;
-      border-radius: 7px;
-      background: linear-gradient(135deg, #e0bd52, #b68a20);
-      color: #050505;
-      font-size: 22px;
-      font-family: Georgia, serif;
-      letter-spacing: .08em;
-      font-weight: bold;
-    }
-    .note {
-      text-align: center;
-      color: #ccc;
-      font-size: 13px;
-      margin-top: 14px;
-    }
-    #orderText {
-      margin-top: 18px;
-      display: none;
-      white-space: pre-wrap;
-      background: #101010;
-      border: 1px solid #444;
-      border-radius: 8px;
-      padding: 14px;
-      color: #eee;
-    }
-    .copy-btn {
-      margin-top: 10px;
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d6ad3a;
-      background: transparent;
-      color: #d6ad3a;
-      border-radius: 6px;
-      display: none;
-    }
-@media(max-width:760px){
-  .hero{grid-template-columns:1fr}
-  .grid{grid-template-columns:1fr}
-
-  .row{
-    display:flex;
-    flex-direction:column;
-    align-items:stretch;
-    gap:12px;
-    padding:18px 16px;
-  }
-
-  .row.header{
-    display:none;
-  }
-
-  .row select{
-    appearance:auto;
-    -webkit-appearance:menulist;
-    display:block;
-    width:100%;
-    height:56px;
-    min-height:56px;
-    padding:0 14px;
-    font-size:18px;
-    color:#f7f4ec;
-    background:#080808;
-  }
-
-  .price{
-    font-size:18px;
-    margin:0;
-  }
-
-  .qty-control{
-    justify-content:flex-start;
-  }
-
-  .tax-box{
-    grid-template-columns:1fr;
-  }
-} 
- </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TERRA Motsunabe Takeout Order</title>
+<style>
+body{margin:0;background:#050505;color:#f7f4ec;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.page{max-width:980px;margin:0 auto;padding:22px 16px 40px}
+.hero{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:center;margin-bottom:28px}
+.logo-wrap{text-align:center}.logo{width:85%;max-width:340px}.title{margin-top:10px;color:#d4af37;font-family:Georgia,serif;font-size:36px;letter-spacing:.16em}.subtitle{letter-spacing:.2em;font-size:17px}.hero-photo{width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.14)}
+.section{border-top:1px solid rgba(212,175,55,.55);padding-top:16px;margin-top:24px}h2{margin:0 0 16px;color:#d4af37;font-family:Georgia,serif;font-size:22px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px}label{display:block;margin-bottom:7px;font-size:14px}
+input,textarea{width:100%;background:#080808;color:#f7f4ec;border:1px solid rgba(255,255,255,.35);border-radius:7px;padding:13px 14px;font-size:16px}textarea{min-height:86px;resize:vertical}
+.order-card{border:1px solid rgba(255,255,255,.16);border-radius:12px;background:rgba(10,10,10,.86);overflow:hidden}
+.row{display:grid;grid-template-columns:1.35fr .95fr .55fr .65fr;gap:14px;align-items:center;padding:16px;border-bottom:1px solid rgba(255,255,255,.12)}
+.row.header{color:#b9b4aa;font-size:13px;text-transform:uppercase;letter-spacing:.08em;padding:12px 16px}
+.item-name{font-size:18px;font-weight:600}.item-note{color:#b9b4aa;font-size:13px;margin-top:4px}.price{font-size:17px;white-space:nowrap}
+.flavor{display:flex;gap:8px;flex-wrap:wrap}
+.flavor input{display:none}
+.flavor label{margin:0;display:inline-flex;align-items:center;justify-content:center;min-width:92px;height:44px;padding:0 12px;border:1px solid rgba(255,255,255,.35);border-radius:8px;background:#080808;color:#f7f4ec;font-size:15px;font-weight:600;white-space:nowrap}
+.flavor input:checked+label{border-color:#d4af37;color:#050505;background:#d4af37}
+.no-option{color:#f7f4ec;text-align:center}
+.qty-control{display:flex;align-items:center;justify-content:flex-end;gap:8px}.qty-btn{width:38px;height:38px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.06);color:#f7f4ec;border-radius:6px;font-size:22px}.qty{width:50px;text-align:center;padding:8px}
+.tax-box{margin-top:18px;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:18px;display:grid;grid-template-columns:1fr 320px;gap:20px;background:rgba(255,255,255,.03);align-items:end}
+.summary{font-size:17px;line-height:1.8}.summary-row{display:flex;justify-content:space-between;gap:20px}.summary-row.total{color:#d4af37;font-family:Georgia,serif;font-size:26px;border-top:1px solid rgba(212,175,55,.45);margin-top:8px;padding-top:8px}
+.submit{margin-top:18px;width:100%;border:0;background:linear-gradient(180deg,#e3c65a,#b78e20);color:#050505;padding:18px;border-radius:8px;font-family:Georgia,serif;font-size:24px;letter-spacing:.08em;font-weight:700}.notice{color:#b9b4aa;text-align:center;margin-top:14px;font-size:14px}.line-message{display:none;margin-top:18px;background:#101010;border:1px solid rgba(212,175,55,.35);border-radius:10px;padding:16px;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.row{display:block;padding:18px 16px}.row.header{display:none}.flavor{margin:14px 0;display:flex;gap:10px}.flavor label{min-width:125px;height:50px;font-size:17px}.price{margin:10px 0;font-size:18px}.qty-control{justify-content:flex-start;margin-top:12px}.tax-box{grid-template-columns:1fr}.summary{margin-top:18px}}
+</style>
 </head>
 <body>
-  <main class="page">
-    <section class="hero">
-      <div class="logo-box">
-        <img class="logo" src="terra_logo.png" alt="TERRA Logo" />
-        <h1 class="title">MOTSU NABE</h1>
-        <div class="subtitle">TAKEOUT ORDER</div>
-      </div>
-      <img class="food-img" src="motsunabe.jpg" alt="Motsunabe" />
-    </section>
+<main class="page">
+<section class="hero"><div class="logo-wrap"><img src="terra_logo.png" class="logo" alt="TERRA logo"><div class="title">MOTSUNABE</div><div class="subtitle">TAKEOUT ORDER</div></div><img src="motsunabe.jpg" class="hero-photo" alt="Motsunabe"></section>
+<section class="section"><h2>CUSTOMER INFORMATION</h2><div class="grid"><div><label>Name</label><input id="name" type="text" placeholder="Your name"></div><div><label>Phone Number</label><input id="phone" type="tel" placeholder="Phone number"></div><div><label>Pickup Date</label><input id="date" type="date"></div><div><label>Pickup Time</label><input id="time" type="time"></div></div></section>
+<section class="section"><h2>ORDER</h2><div class="order-card">
+<div class="row header"><div>Item</div><div>Flavor / Option</div><div>Amount</div><div>Qty</div></div>
 
-    <h2 class="section-title">CUSTOMER INFORMATION</h2>
-    <div class="grid">
-      <div><label>Name</label><input id="name" type="text" placeholder="Your name"></div>
-      <div><label>Phone Number</label><input id="phone" type="tel" placeholder="Phone number"></div>
-      <div><label>Pickup Date</label><input id="date" type="date"></div>
-      <div><label>Pickup Time</label><input id="time" type="time"></div>
-    </div>
+<div class="row item" data-name="Motsunabe Set 2–3 pax" data-price="1300">
+<div><div class="item-name">Motsunabe Set 2–3 pax</div><div class="item-note">2–3 people / Base 1,300php + 12% TAX</div></div>
+<div class="flavor"><input type="radio" name="setFlavor" id="setMiso" value="Miso" checked><label for="setMiso">Miso</label><input type="radio" name="setFlavor" id="setSoy" value="Soy Sauce"><label for="setSoy">Soy Sauce</label></div>
+<div class="price">1,300php</div><div class="qty-control"><button class="qty-btn minus" type="button">−</button><input class="qty" type="number" value="0" min="0"><button class="qty-btn plus" type="button">＋</button></div></div>
 
-    <h2 class="section-title">ORDER</h2>
-    <table class="order-table">
-      <thead>
-        <tr><th>ITEM</th><th>FLAVOR / OPTION</th><th>PRICE</th><th style="text-align:right;">QTY</th></tr>
-      </thead>
-      <tbody>
-        <tr data-name="Motsunabe Set 2-3 pax" data-price="1300">
-          <td><div class="item-name">Motsunabe Set 2–3 pax</div><div class="item-sub">2–3 people</div></td>
-          <td><select class="option"><option>Miso</option><option>Soy Sauce</option></select></td>
-          <td class="price">1,300php</td>
-          <td><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty">0</span><button type="button" class="qty-btn plus">+</button></div></td>
-        </tr>
-        <tr data-name="Extra Motsu (Beef Intestines)" data-price="640">
-          <td><div class="item-name">Extra Motsu (Beef Intestines)</div></td><td></td><td class="price">640php</td>
-          <td><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty">0</span><button type="button" class="qty-btn plus">+</button></div></td>
-        </tr>
-        <tr data-name="Extra Vegetables" data-price="480">
-          <td><div class="item-name">Extra Vegetables</div></td><td></td><td class="price">480php</td>
-          <td><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty">0</span><button type="button" class="qty-btn plus">+</button></div></td>
-        </tr>
-        <tr data-name="Extra Soup" data-price="120">
-          <td><div class="item-name">Extra Soup</div><div class="item-sub">Miso or Soy Sauce</div></td>
-          <td><select class="option"><option>Miso</option><option>Soy Sauce</option></select></td><td class="price">120php</td>
-          <td><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty">0</span><button type="button" class="qty-btn plus">+</button></div></td>
-        </tr>
-        <tr data-name="Chanpon Noodles" data-price="250">
-          <td><div class="item-name">Chanpon Noodles</div></td><td></td><td class="price">250php</td>
-          <td><div class="qty-box"><button type="button" class="qty-btn minus">−</button><span class="qty">0</span><button type="button" class="qty-btn plus">+</button></div></td>
-        </tr>
-      </tbody>
-    </table>
+<div class="row item" data-name="Extra Motsu (Beef Intestines)" data-price="640"><div><div class="item-name">Extra Motsu</div><div class="item-note">Beef Intestines</div></div><div class="no-option">-</div><div class="price">640php</div><div class="qty-control"><button class="qty-btn minus" type="button">−</button><input class="qty" type="number" value="0" min="0"><button class="qty-btn plus" type="button">＋</button></div></div>
 
-    <div class="total-box">
-      <div><label>Notes Optional</label><textarea id="notes" rows="3" placeholder="Allergies, requests, etc."></textarea></div>
-      <div><div class="total-label">TOTAL</div><div class="total-price"><span id="total">0</span>php</div></div>
-    </div>
+<div class="row item" data-name="Extra Vegetables" data-price="480"><div><div class="item-name">Extra Vegetables</div></div><div class="no-option">-</div><div class="price">480php</div><div class="qty-control"><button class="qty-btn minus" type="button">−</button><input class="qty" type="number" value="0" min="0"><button class="qty-btn plus" type="button">＋</button></div></div>
 
-    <button type="button" class="submit" id="submitBtn">SUBMIT ORDER</button>
-    <p class="note">* Your order is confirmed only after our reply.</p>
-    <div id="orderText"></div>
-    <button type="button" id="copyBtn" class="copy-btn">COPY ORDER TEXT</button>
-  </main>
+<div class="row item" data-name="Extra Soup" data-price="120">
+<div><div class="item-name">Extra Soup</div><div class="item-note">Miso or Soy Sauce</div></div>
+<div class="flavor"><input type="radio" name="soupFlavor" id="soupMiso" value="Miso" checked><label for="soupMiso">Miso</label><input type="radio" name="soupFlavor" id="soupSoy" value="Soy Sauce"><label for="soupSoy">Soy Sauce</label></div>
+<div class="price">120php</div><div class="qty-control"><button class="qty-btn minus" type="button">−</button><input class="qty" type="number" value="0" min="0"><button class="qty-btn plus" type="button">＋</button></div></div>
 
-  <script>
-    function updateTotal() {
-      let total = 0;
-      document.querySelectorAll('tr[data-price]').forEach(function(row) {
-        const price = Number(row.getAttribute('data-price')) || 0;
-        const qtyEl = row.querySelector('.qty');
-        const qty = qtyEl ? Number(qtyEl.textContent) || 0 : 0;
-        total += price * qty;
-      });
-      document.getElementById('total').textContent = total.toLocaleString();
-    }
+<div class="row item" data-name="Chanpon Noodles" data-price="250"><div><div class="item-name">Chanpon Noodles</div></div><div class="no-option">-</div><div class="price">250php</div><div class="qty-control"><button class="qty-btn minus" type="button">−</button><input class="qty" type="number" value="0" min="0"><button class="qty-btn plus" type="button">＋</button></div></div>
+</div>
+<div class="tax-box"><div><label>Notes Optional</label><textarea id="notes" placeholder="Allergies, requests, etc."></textarea></div><div class="summary"><div class="summary-row"><span>Amount</span><strong id="amount">0php</strong></div><div class="summary-row"><span>TAX 12%</span><strong id="tax">0php</strong></div><div class="summary-row total"><span>TOTAL</span><strong id="total">0php</strong></div></div></div>
+<button class="submit" type="button" id="submitBtn">SUBMIT ORDER</button><p class="notice">* TAX 12% will be added to the amount.<br>* Your order is confirmed only after our reply.</p><div id="lineMessage" class="line-message"></div></section>
+</main>
+<script>
+const TAX_RATE=0.12;
+const WEB_APP_URL="https://script.google.com/macros/s/AKfycbwYnq_CXQ7YJh6Ye61bXqrhIlVRcIopqMxnGEZhEnD-mIDqNiY2JXel6BEM0uQ64CY/exec";
+function formatPhp(value){return Math.round(value).toLocaleString("en-PH")+"php";}
+function calculate(){let amount=0;document.querySelectorAll(".item").forEach(item=>{const price=Number(item.dataset.price);const qty=Number(item.querySelector(".qty").value||0);amount+=price*qty;});const tax=amount*TAX_RATE;const total=amount+tax;document.getElementById("amount").textContent=formatPhp(amount);document.getElementById("tax").textContent=formatPhp(tax);document.getElementById("total").textContent=formatPhp(total);return{amount,tax,total};}
+function bindButtons(){document.querySelectorAll(".plus").forEach(button=>{button.addEventListener("click",()=>{const input=button.parentElement.querySelector(".qty");input.value=Number(input.value||0)+1;calculate();});});document.querySelectorAll(".minus").forEach(button=>{button.addEventListener("click",()=>{const input=button.parentElement.querySelector(".qty");input.value=Math.max(0,Number(input.value||0)-1);calculate();});});document.querySelectorAll(".qty").forEach(input=>{input.addEventListener("input",calculate);});document.getElementById("submitBtn").addEventListener("click",createOrderMessage);}
+function getOption(item){const checked=item.querySelector(".flavor input:checked");return checked?checked.value:"";}
+function createOrderMessage(){const customerName=document.getElementById("name").value;const phone=document.getElementById("phone").value;const pickupDate=document.getElementById("date").value;const pickupTime=document.getElementById("time").value;const notes=document.getElementById("notes").value;const totals=calculate();const orderLines=[];document.querySelectorAll(".item").forEach(item=>{const itemName=item.dataset.name;const price=Number(item.dataset.price);const qty=Number(item.querySelector(".qty").value||0);const option=getOption(item);if(qty>0){const optionText=option?" / "+option:"";orderLines.push(`・${itemName}${optionText} × ${qty} = ${formatPhp(price*qty)}`);}});if(orderLines.length===0){alert("Please select at least one item.");return;}const message=`【TERRA Motsunabe Takeout Order】
 
-    function changeQty(button, amount) {
-      const row = button.closest('tr[data-price]');
-      if (!row) return;
-      const qty = row.querySelector('.qty');
-      const current = Number(qty.textContent) || 0;
-      qty.textContent = Math.max(0, current + amount);
-      updateTotal();
-    }
+Name: ${customerName}
+Phone: ${phone}
+Pickup Date: ${pickupDate}
+Pickup Time: ${pickupTime}
 
-    function buildOrderText() {
-      const customerName = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const date = document.getElementById('date').value;
-      const time = document.getElementById('time').value;
-      const notes = document.getElementById('notes').value.trim();
-      let lines = [];
-      let total = 0;
+Order:
+${orderLines.join("\n")}
 
-      document.querySelectorAll('tr[data-price]').forEach(function(row) {
-        const qty = Number(row.querySelector('.qty').textContent) || 0;
-        if (qty > 0) {
-          const itemName = row.getAttribute('data-name');
-          const price = Number(row.getAttribute('data-price')) || 0;
-          const optionEl = row.querySelector('.option');
-          const option = optionEl ? ' / ' + optionEl.value : '';
-          lines.push('・' + itemName + option + ' × ' + qty + ' = ' + (price * qty).toLocaleString() + 'php');
-          total += price * qty;
-        }
-      });
+Amount: ${formatPhp(totals.amount)}
+TAX 12%: ${formatPhp(totals.tax)}
+Total: ${formatPhp(totals.total)}
 
-      if (lines.length === 0) {
-        lines.push('・No items selected');
-      }
+Notes:
+${notes}
 
-      return '【TERRA Motsunabe Takeout Order】\n\n'
-        + 'Name: ' + customerName + '\n'
-        + 'Phone: ' + phone + '\n'
-        + 'Pickup Date: ' + date + '\n'
-        + 'Pickup Time: ' + time + '\n\n'
-        + 'Order:\n' + lines.join('\n') + '\n\n'
-        + 'Total: ' + total.toLocaleString() + 'php\n\n'
-        + 'Notes: ' + notes + '\n\n'
-        + '*Order is confirmed only after our reply.';
-    }
-
-    function submitOrder() {
-      const text = buildOrderText();
-      const orderText = document.getElementById('orderText');
-      const copyBtn = document.getElementById('copyBtn');
-      orderText.textContent = text;
-      orderText.style.display = 'block';
-      copyBtn.style.display = 'block';
-    }
-
-    function copyOrder() {
-      const text = document.getElementById('orderText').textContent;
-      if (!text) return;
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function() {
-          alert('Order text copied. Please paste it to LINE.');
-        }).catch(function() {
-          fallbackCopy(text);
-        });
-      } else {
-        fallbackCopy(text);
-      }
-    }
-
-    function fallbackCopy(text) {
-      const temp = document.createElement('textarea');
-      temp.value = text;
-      temp.style.position = 'fixed';
-      temp.style.left = '-9999px';
-      document.body.appendChild(temp);
-      temp.focus();
-      temp.select();
-      document.execCommand('copy');
-      document.body.removeChild(temp);
-      alert('Order text copied. Please paste it to LINE.');
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.plus').forEach(function(btn) {
-        btn.addEventListener('click', function(event) {
-          event.preventDefault();
-          changeQty(btn, 1);
-        });
-      });
-
-      document.querySelectorAll('.minus').forEach(function(btn) {
-        btn.addEventListener('click', function(event) {
-          event.preventDefault();
-          changeQty(btn, -1);
-        });
-      });
-
-      document.getElementById('submitBtn').addEventListener('click', function(event) {
-        event.preventDefault();
-        submitOrder();
-      });
-
-      document.getElementById('copyBtn').addEventListener('click', function(event) {
-        event.preventDefault();
-        copyOrder();
-      });
-
-      updateTotal();
-    });
-  </script>
+* Order is confirmed only after our reply.`;const box=document.getElementById("lineMessage");box.style.display="block";box.textContent=message;sendToSheet({name:customerName,phone:phone,pickupDate:pickupDate,pickupTime:pickupTime,order:orderLines.join(" | "),amount:Math.round(totals.amount),tax:Math.round(totals.tax),total:Math.round(totals.total),notes:notes});}
+function sendToSheet(data){fetch(WEB_APP_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(data)}).then(()=>{alert("Order submitted successfully!");}).catch(error=>{console.error(error);alert("Error sending order.");});}
+bindButtons();calculate();
+</script>
 </body>
 </html>
