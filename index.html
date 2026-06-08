@@ -55,13 +55,64 @@ input,textarea{width:100%;background:#080808;color:#f7f4ec;border:1px solid rgba
 <button class="submit" type="button" id="submitBtn">SUBMIT ORDER</button><p class="notice">* TAX 12% will be added to the amount.<br>* Your order is confirmed only after our reply.</p><div id="lineMessage" class="line-message"></div></section>
 </main>
 <script>
-const TAX_RATE=0.12;
-const WEB_APP_URL="https://script.google.com/macros/s/AKfycbwYnq_CXQ7YJh6Ye61bXqrhIlVRcIopqMxnGEZhEnD-mIDqNiY2JXel6BEM0uQ64CY/exec";
-function formatPhp(value){return Math.round(value).toLocaleString("en-PH")+"php";}
-function calculate(){let amount=0;document.querySelectorAll(".item").forEach(item=>{const price=Number(item.dataset.price);const qty=Number(item.querySelector(".qty").value||0);amount+=price*qty;});const tax=amount*TAX_RATE;const total=amount+tax;document.getElementById("amount").textContent=formatPhp(amount);document.getElementById("tax").textContent=formatPhp(tax);document.getElementById("total").textContent=formatPhp(total);return{amount,tax,total};}
-function bindButtons(){document.querySelectorAll(".plus").forEach(button=>{button.addEventListener("click",()=>{const input=button.parentElement.querySelector(".qty");input.value=Number(input.value||0)+1;calculate();});});document.querySelectorAll(".minus").forEach(button=>{button.addEventListener("click",()=>{const input=button.parentElement.querySelector(".qty");input.value=Math.max(0,Number(input.value||0)-1);calculate();});});document.querySelectorAll(".qty").forEach(input=>{input.addEventListener("input",calculate);});document.getElementById("submitBtn").addEventListener("click",createOrderMessage);}
-function getOption(item){const checked=item.querySelector(".flavor input:checked");return checked?checked.value:"";}
-function createOrderMessage(){const customerName=document.getElementById("name").value;const phone=document.getElementById("phone").value;const pickupDate=document.getElementById("date").value;const pickupTime=document.getElementById("time").value;const notes=document.getElementById("notes").value;const totals=calculate();const orderLines=[];document.querySelectorAll(".item").forEach(item=>{const itemName=item.dataset.name;const price=Number(item.dataset.price);const qty=Number(item.querySelector(".qty").value||0);const option=getOption(item);if(qty>0){const optionText=option?" / "+option:"";orderLines.push(`・${itemName}${optionText} × ${qty} = ${formatPhp(price*qty)}`);}});if(orderLines.length===0){alert("Please select at least one item.");return;}const message=`【TERRA Motsunabe Takeout Order】
+const TAX_RATE = 0.12;
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwYnq_CXQ7YJh6Ye61bXqrhIlVRcIopqMxnGEZhEnD-mIDqNiY2JXel6BEM0uQ64CY/exec";
+
+function formatPhp(value){
+  return Math.round(value).toLocaleString("en-PH") + "php";
+}
+
+function calculate(){
+  let amount = 0;
+  document.querySelectorAll(".item").forEach(item => {
+    const price = Number(item.dataset.price);
+    const qty = Number(item.querySelector(".qty").value || 0);
+    amount += price * qty;
+  });
+
+  const tax = amount * TAX_RATE;
+  const total = amount + tax;
+
+  document.getElementById("amount").textContent = formatPhp(amount);
+  document.getElementById("tax").textContent = formatPhp(tax);
+  document.getElementById("total").textContent = formatPhp(total);
+
+  return { amount, tax, total };
+}
+
+function getOption(item){
+  const checked = item.querySelector(".flavor input:checked");
+  return checked ? checked.value : "";
+}
+
+function createOrderMessage(){
+  const customerName = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const pickupDate = document.getElementById("date").value;
+  const pickupTime = document.getElementById("time").value;
+  const notes = document.getElementById("notes").value;
+  const totals = calculate();
+
+  const orderLines = [];
+
+  document.querySelectorAll(".item").forEach(item => {
+    const itemName = item.dataset.name;
+    const price = Number(item.dataset.price);
+    const qty = Number(item.querySelector(".qty").value || 0);
+    const option = getOption(item);
+
+    if(qty > 0){
+      const optionText = option ? " / " + option : "";
+      orderLines.push(`・${itemName}${optionText} × ${qty} = ${formatPhp(price * qty)}`);
+    }
+  });
+
+  if(orderLines.length === 0){
+    alert("Please select at least one item.");
+    return;
+  }
+
+  const message = `【TERRA Motsunabe Takeout Order】
 
 Name: ${customerName}
 Phone: ${phone}
@@ -78,9 +129,63 @@ Total: ${formatPhp(totals.total)}
 Notes:
 ${notes}
 
-* Order is confirmed only after our reply.`;const box=document.getElementById("lineMessage");box.style.display="block";box.textContent=message;sendToSheet({name:customerName,phone:phone,pickupDate:pickupDate,pickupTime:pickupTime,order:orderLines.join(" | "),amount:Math.round(totals.amount),tax:Math.round(totals.tax),total:Math.round(totals.total),notes:notes});}
-function sendToSheet(data){fetch(WEB_APP_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(data)}).then(()=>{alert("Order submitted successfully!");}).catch(error=>{console.error(error);alert("Error sending order.");});}
-bindButtons();calculate();
+* Order is confirmed only after our reply.`;
+
+  const box = document.getElementById("lineMessage");
+  box.style.display = "block";
+  box.textContent = message;
+
+  sendToSheet({
+    name: customerName,
+    phone: phone,
+    pickupDate: pickupDate,
+    pickupTime: pickupTime,
+    order: orderLines.join(" | "),
+    amount: Math.round(totals.amount),
+    tax: Math.round(totals.tax),
+    total: Math.round(totals.total),
+    notes: notes
+  });
+}
+
+function sendToSheet(data){
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify(data)
+  })
+  .then(() => {
+    alert("Order submitted successfully!");
+  })
+  .catch(error => {
+    console.error(error);
+    alert("Error sending order.");
+  });
+}
+
+document.querySelectorAll(".plus").forEach(button => {
+  button.addEventListener("click", () => {
+    const input = button.parentElement.querySelector(".qty");
+    input.value = Number(input.value || 0) + 1;
+    calculate();
+  });
+});
+
+document.querySelectorAll(".minus").forEach(button => {
+  button.addEventListener("click", () => {
+    const input = button.parentElement.querySelector(".qty");
+    input.value = Math.max(0, Number(input.value || 0) - 1);
+    calculate();
+  });
+});
+
+document.querySelectorAll(".qty").forEach(input => {
+  input.addEventListener("input", calculate);
+});
+
+document.getElementById("submitBtn").addEventListener("click", createOrderMessage);
+
+calculate();
 </script>
 </body>
 </html>
