@@ -4,62 +4,437 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TERRA Motsunabe Takeout Order</title>
+
 <style>
-body{margin:0;background:#050505;color:#f7f4ec;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.page{max-width:980px;margin:0 auto;padding:22px 16px 40px}
-.hero{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:center;margin-bottom:28px}
-.logo-wrap{text-align:center}.logo{width:85%;max-width:340px}.title{margin-top:10px;color:#d4af37;font-family:Georgia,serif;font-size:36px;letter-spacing:.16em}.subtitle{letter-spacing:.2em;font-size:17px}.hero-photo{width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.14)}
-.section{border-top:1px solid rgba(212,175,55,.55);padding-top:16px;margin-top:24px}h2{margin:0 0 16px;color:#d4af37;font-family:Georgia,serif;font-size:22px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px}label{display:block;margin-bottom:7px;font-size:14px}
-input,textarea{width:100%;background:#080808;color:#f7f4ec;border:1px solid rgba(255,255,255,.35);border-radius:7px;padding:13px 14px;font-size:16px}textarea{min-height:86px;resize:vertical}
-.order-card{border:1px solid rgba(255,255,255,.16);border-radius:12px;background:rgba(10,10,10,.86);overflow:hidden}
-.row{display:grid;grid-template-columns:1.35fr .95fr .55fr .65fr;gap:14px;align-items:center;padding:16px;border-bottom:1px solid rgba(255,255,255,.12)}
-.row.header{color:#b9b4aa;font-size:13px;text-transform:uppercase;letter-spacing:.08em;padding:12px 16px}
-.item-name{font-size:18px;font-weight:600}.item-note{color:#b9b4aa;font-size:13px;margin-top:4px}.price{font-size:17px;white-space:nowrap}
-.flavor{display:flex;gap:8px;flex-wrap:wrap}
-.flavor input{display:none}
-.flavor label{margin:0;display:inline-flex;align-items:center;justify-content:center;min-width:92px;height:44px;padding:0 12px;border:1px solid rgba(255,255,255,.35);border-radius:8px;background:#080808;color:#f7f4ec;font-size:15px;font-weight:600;white-space:nowrap}
-.flavor input:checked+label{border-color:#d4af37;color:#050505;background:#d4af37}
-.no-option{color:#f7f4ec;text-align:center}
-.qty-control{display:flex;align-items:center;justify-content:flex-end;gap:8px}.qty-btn{width:38px;height:38px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.06);color:#f7f4ec;border-radius:6px;font-size:22px}.qty{width:50px;text-align:center;padding:8px}
-.tax-box{margin-top:18px;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:18px;display:grid;grid-template-columns:1fr 320px;gap:20px;background:rgba(255,255,255,.03);align-items:end}
-.summary{font-size:17px;line-height:1.8}.summary-row{display:flex;justify-content:space-between;gap:20px}.summary-row.total{color:#d4af37;font-family:Georgia,serif;font-size:26px;border-top:1px solid rgba(212,175,55,.45);margin-top:8px;padding-top:8px}
-.submit{margin-top:18px;width:100%;border:0;background:linear-gradient(180deg,#e3c65a,#b78e20);color:#050505;padding:18px;border-radius:8px;font-family:Georgia,serif;font-size:24px;letter-spacing:.08em;font-weight:700}.notice{color:#b9b4aa;text-align:center;margin-top:14px;font-size:14px}.line-message{display:none;margin-top:18px;background:#101010;border:1px solid rgba(212,175,55,.35);border-radius:10px;padding:16px;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
-@media(max-width:760px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.row{display:block;padding:18px 16px}.row.header{display:none}.flavor{margin:14px 0;display:flex;gap:10px}.flavor label{min-width:125px;height:50px;font-size:17px}.price{margin:10px 0;font-size:18px}.qty-control{justify-content:flex-start;margin-top:12px}.tax-box{grid-template-columns:1fr}.summary{margin-top:18px}}
+body{
+  margin:0;
+  background:#050505;
+  color:#f7f4ec;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.page{
+  max-width:980px;
+  margin:0 auto;
+  padding:22px 16px 40px;
+}
+.hero{
+  text-align:center;
+  margin-bottom:28px;
+}
+.logo{
+  width:85%;
+  max-width:340px;
+}
+.title{
+  color:#d4af37;
+  font-size:34px;
+  font-weight:800;
+  margin:18px 0 8px;
+}
+.subtitle{
+  color:#c9c1b2;
+  font-size:16px;
+}
+.section{
+  border-top:1px solid #d4af37;
+  padding-top:18px;
+  margin-top:22px;
+}
+h2{
+  color:#d4af37;
+  font-size:28px;
+  margin:0 0 16px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px 22px;
+}
+label{
+  display:block;
+  margin-bottom:7px;
+  color:#ddd;
+  font-weight:600;
+}
+input,textarea{
+  width:100%;
+  background:#080808;
+  color:#f7f4ec;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:8px;
+  padding:13px;
+  font-size:16px;
+  box-sizing:border-box;
+}
+textarea{
+  min-height:90px;
+}
+.order-card{
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:12px;
+  overflow:hidden;
+}
+.row{
+  display:grid;
+  grid-template-columns:1.35fr .8fr .8fr 1fr;
+  gap:14px;
+  align-items:center;
+  padding:16px 14px;
+  border-bottom:1px solid rgba(255,255,255,.14);
+}
+.row.header{
+  color:#b9b4aa;
+  text-transform:uppercase;
+  font-size:13px;
+  font-weight:700;
+}
+.item-name{
+  font-size:20px;
+  font-weight:800;
+}
+.item-note{
+  color:#b9b4aa;
+  font-size:13px;
+  margin-top:4px;
+}
+.price{
+  font-size:20px;
+  font-weight:700;
+}
+.flavor{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.flavor input{
+  display:none;
+}
+.flavor label{
+  margin:0;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:92px;
+  min-height:44px;
+  padding:0 10px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:8px;
+  color:#f7f4ec;
+  cursor:pointer;
+}
+.flavor input:checked + label{
+  border-color:#d4af37;
+  color:#050505;
+  background:#d4af37;
+}
+.no-option{
+  color:#f7f4ec;
+  text-align:center;
+}
+.qty-control{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+}
+.qty-btn{
+  width:38px;
+  height:38px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.35);
+  background:#101010;
+  color:#fff;
+  font-size:24px;
+  font-weight:700;
+  cursor:pointer;
+  line-height:1;
+}
+.qty{
+  width:58px;
+  text-align:center;
+}
+.tax-box{
+  margin-top:18px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:12px;
+  padding:16px;
+}
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:18px;
+  font-weight:700;
+  margin:8px 0;
+}
+.summary-row.total{
+  color:#d4af37;
+  font-size:32px;
+  border-top:1px solid rgba(212,175,55,.5);
+  padding-top:14px;
+}
+.submit{
+  margin-top:22px;
+  width:100%;
+  border:0;
+  background:linear-gradient(180deg,#e3c65a,#b78e20);
+  color:#050505;
+  padding:18px;
+  border-radius:8px;
+  font-size:24px;
+  letter-spacing:.08em;
+  font-weight:800;
+  cursor:pointer;
+}
+.submit:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+}
+.notice{
+  color:#b9b4aa;
+  text-align:center;
+  margin-top:14px;
+  font-size:14px;
+}
+.line-message{
+  display:none;
+  margin-top:18px;
+  background:#101010;
+  border:1px solid rgba(212,175,55,.35);
+  border-radius:10px;
+  padding:16px;
+  white-space:pre-wrap;
+  font-family:monospace;
+  font-size:13px;
+}
+
+/* Success screen */
+.success-screen{
+  display:none;
+  text-align:center;
+  padding:60px 24px;
+}
+.success-screen.show{ display:block; }
+.success-icon{ font-size:72px; margin-bottom:20px; }
+.success-screen h2{
+  color:#d4af37;
+  font-size:28px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+.success-screen p{ color:#b9b4aa; font-size:16px; line-height:1.7; }
+.order-no{
+  display:inline-block;
+  background:#101010;
+  border:1px solid rgba(212,175,55,.5);
+  border-radius:10px;
+  padding:14px 28px;
+  margin:18px 0;
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:0.05em;
+  color:#d4af37;
+}
+
+@media(max-width:760px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+  .row{
+    grid-template-columns:1.1fr .8fr .8fr 1fr;
+    gap:10px;
+    padding:14px 10px;
+  }
+  .row.header{
+    font-size:12px;
+  }
+  .item-name{
+    font-size:18px;
+  }
+  .price{
+    font-size:18px;
+  }
+  .flavor label{
+    min-width:76px;
+    min-height:42px;
+    font-size:14px;
+  }
+}
 </style>
 </head>
+
 <body>
 <main class="page">
-<section class="hero"><div class="logo-wrap"><img src="terra_logo.png" class="logo" alt="TERRA logo"><div class="title">MOTSUNABE</div><div class="subtitle">TAKEOUT ORDER</div></div><img src="motsunabe.jpg" class="hero-photo" alt="Motsunabe"></section>
-<section class="section"><h2>CUSTOMER INFORMATION</h2><div class="grid"><div><label>Name</label><input id="name" type="text" placeholder="Your name"></div><div><label>Phone Number</label><input id="phone" type="tel" placeholder="Phone number"></div><div><label>Pickup Date</label>
-<input id="date" type="text" placeholder="YYYY-MM-DD"></div><div><label>Pickup Time</label><input id="time" type="time"></div></div></section>
-<section class="section"><h2>ORDER</h2><div class="order-card">
-<div class="row header"><div>Item</div><div>Flavor / Option</div><div>Amount</div><div>Qty</div></div>
+
+<!-- SUCCESS SCREEN -->
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">✅</div>
+  <h2>Order Received!</h2>
+  <div class="order-no" id="orderNoDisplay"></div>
+  <p>We will confirm your order soon.<br>Please check your phone for updates.</p>
+</div>
+
+<!-- FORM -->
+<div id="formWrap">
+
+<section class="hero">
+  <img src="terra_logo.png" class="logo" alt="TERRA Logo">
+  <div class="title">MOTSUNABE</div>
+  <div class="subtitle">TAKEOUT ORDER</div>
+  <img src="motsunabe.jpg" class="logo" alt="Motsunabe">
+</section>
+
+<section class="section">
+<h2>CUSTOMER INFORMATION</h2>
+<div class="grid">
+  <div>
+    <label>Name</label>
+    <input id="name" type="text" placeholder="Your name" autocomplete="name">
+  </div>
+  <div>
+    <label>Phone Number</label>
+    <input id="phone" type="tel" placeholder="Phone number" autocomplete="tel">
+  </div>
+  <div>
+    <label>Pickup Date</label>
+    <input id="date" type="date">
+  </div>
+  <div>
+    <label>Pickup Time</label>
+    <input id="time" type="time">
+  </div>
+</div>
+</section>
+
+<section class="section">
+<h2>ORDER</h2>
+
+<div class="order-card">
+
+<div class="row header">
+  <div>Item</div>
+  <div>Flavor / Option</div>
+  <div>Price</div>
+  <div>Qty</div>
+</div>
 
 <div class="row item" data-name="Motsunabe Set 2–3 pax" data-price="1300">
-<div><div class="item-name">Motsunabe Set 2–3 pax</div><div class="item-note">2–3 people / Base 1,300php + 12% TAX</div></div>
-<div class="flavor"><input type="radio" name="setFlavor" id="setMiso" value="Miso" checked><label for="setMiso">Miso</label><input type="radio" name="setFlavor" id="setSoy" value="Soy Sauce"><label for="setSoy">Soy Sauce</label></div>
-<div class="price">1,300php</div><div class="qty-control"><button class="qty-btn minus" type="button">−</button><input class="qty" type="number" value="0" min="0"><button class="qty-btn plus" type="button">＋</button></div></div>
+  <div>
+    <div class="item-name">Motsunabe Set 2–3 pax</div>
+    <div class="item-note">2–3 people / Base 1,300php + 12% TAX</div>
+  </div>
+  <div class="flavor">
+    <input type="radio" name="setFlavor" id="setMiso" value="Miso" checked>
+    <label for="setMiso">Miso</label>
+    <input type="radio" name="setFlavor" id="setSoy" value="Soy Sauce">
+    <label for="setSoy">Soy Sauce</label>
+  </div>
+  <div class="price">1,300php</div>
+  <div class="qty-control">
+    <button class="qty-btn minus" type="button">−</button>
+    <input class="qty" type="number" value="0" min="0">
+    <button class="qty-btn plus" type="button">+</button>
+  </div>
+</div>
 
-<div class="row item" data-name="Extra Motsu (Beef Intestines)" data-price="640"><div><div class="item-name">Extra Motsu</div><div class="item-note">Beef Intestines</div></div><div class="no-option">-</div><div class="price">640php</div><div class="qty-control"><button class="qty-btn minus" type="button">−</button><input class="qty" type="number" value="0" min="0"><button class="qty-btn plus" type="button">＋</button></div></div>
+<div class="row item" data-name="Extra Motsu (Beef Intestines)" data-price="640">
+  <div>
+    <div class="item-name">Extra Motsu</div>
+    <div class="item-note">Beef Intestines</div>
+  </div>
+  <div class="no-option">-</div>
+  <div class="price">640php</div>
+  <div class="qty-control">
+    <button class="qty-btn minus" type="button">−</button>
+    <input class="qty" type="number" value="0" min="0">
+    <button class="qty-btn plus" type="button">+</button>
+  </div>
+</div>
 
-<div class="row item" data-name="Extra Vegetables" data-price="480"><div><div class="item-name">Extra Vegetables</div></div><div class="no-option">-</div><div class="price">480php</div><div class="qty-control"><button class="qty-btn minus" type="button">−</button><input class="qty" type="number" value="0" min="0"><button class="qty-btn plus" type="button">＋</button></div></div>
+<div class="row item" data-name="Extra Vegetables" data-price="480">
+  <div>
+    <div class="item-name">Extra Vegetables</div>
+  </div>
+  <div class="no-option">-</div>
+  <div class="price">480php</div>
+  <div class="qty-control">
+    <button class="qty-btn minus" type="button">−</button>
+    <input class="qty" type="number" value="0" min="0">
+    <button class="qty-btn plus" type="button">+</button>
+  </div>
+</div>
 
 <div class="row item" data-name="Extra Soup" data-price="120">
-<div><div class="item-name">Extra Soup</div><div class="item-note">Miso or Soy Sauce</div></div>
-<div class="flavor"><input type="radio" name="soupFlavor" id="soupMiso" value="Miso" checked><label for="soupMiso">Miso</label><input type="radio" name="soupFlavor" id="soupSoy" value="Soy Sauce"><label for="soupSoy">Soy Sauce</label></div>
-<div class="price">120php</div><div class="qty-control"><button class="qty-btn minus" type="button">−</button><input class="qty" type="number" value="0" min="0"><button class="qty-btn plus" type="button">＋</button></div></div>
-
-<div class="row item" data-name="Chanpon Noodles" data-price="250"><div><div class="item-name">Chanpon Noodles</div></div><div class="no-option">-</div><div class="price">250php</div><div class="qty-control"><button class="qty-btn minus" type="button">−</button><input class="qty" type="number" value="0" min="0"><button class="qty-btn plus" type="button">＋</button></div></div>
+  <div>
+    <div class="item-name">Extra Soup</div>
+    <div class="item-note">Miso or Soy Sauce</div>
+  </div>
+  <div class="flavor">
+    <input type="radio" name="soupFlavor" id="soupMiso" value="Miso" checked>
+    <label for="soupMiso">Miso</label>
+    <input type="radio" name="soupFlavor" id="soupSoy" value="Soy Sauce">
+    <label for="soupSoy">Soy Sauce</label>
+  </div>
+  <div class="price">120php</div>
+  <div class="qty-control">
+    <button class="qty-btn minus" type="button">−</button>
+    <input class="qty" type="number" value="0" min="0">
+    <button class="qty-btn plus" type="button">+</button>
+  </div>
 </div>
-<div class="tax-box"><div><label>Notes Optional</label><textarea id="notes" placeholder="Allergies, requests, etc."></textarea></div><div class="summary"><div class="summary-row"><span>Amount</span><strong id="amount">0php</strong></div><div class="summary-row"><span>TAX 12%</span><strong id="tax">0php</strong></div><div class="summary-row total"><span>TOTAL</span><strong id="total">0php</strong></div></div></div>
-<button class="submit" type="button" id="submitBtn">SUBMIT ORDER</button><p class="notice">* TAX 12% will be added to the amount.<br>* Your order is confirmed only after our reply.</p><div id="lineMessage" class="line-message"></div></section>
+
+<div class="row item" data-name="Chanpon Noodles" data-price="250">
+  <div>
+    <div class="item-name">Chanpon Noodles</div>
+  </div>
+  <div class="no-option">-</div>
+  <div class="price">250php</div>
+  <div class="qty-control">
+    <button class="qty-btn minus" type="button">−</button>
+    <input class="qty" type="number" value="0" min="0">
+    <button class="qty-btn plus" type="button">+</button>
+  </div>
+</div>
+
+</div><!-- /order-card -->
+
+<div class="tax-box">
+  <label>Notes Optional</label>
+  <textarea id="notes" placeholder="Allergies, requests, etc."></textarea>
+
+  <div class="summary">
+    <div class="summary-row">
+      <span>Amount</span>
+      <strong id="amount">0php</strong>
+    </div>
+    <div class="summary-row">
+      <span>TAX 12%</span>
+      <strong id="tax">0php</strong>
+    </div>
+    <div class="summary-row total">
+      <span>TOTAL</span>
+      <strong id="total">0php</strong>
+    </div>
+  </div>
+</div>
+
+<button class="submit" type="button" id="submitBtn">SUBMIT ORDER</button>
+
+<p class="notice">
+* TAX 12% will be added to the amount.<br>
+* Your order is confirmed only after our reply.
+</p>
+
+<div id="lineMessage" class="line-message"></div>
+
+</section>
+</div><!-- /formWrap -->
+
 </main>
+
 <script>
 const TAX_RATE = 0.12;
-WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw_AyA4aBvt-mcEdVUuXr1UG8P-PJ6ZcT8J1PiEID-VjzDVijtnDVq7wCZ6yorU5EfGeA/exec"
-
-
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw_AyA4aBvt-mcEdVUuXr1UG8P-PJ6ZcT8J1PiEID-VjzDVijtnDVq7wCZ6yorU5EfGeA/exec";
 
 function formatPhp(value){
   return Math.round(value).toLocaleString("en-PH") + "php";
@@ -69,17 +444,14 @@ function calculate(){
   let amount = 0;
   document.querySelectorAll(".item").forEach(item => {
     const price = Number(item.dataset.price);
-    const qty = Number(item.querySelector(".qty").value || 0);
+    const qty   = Number(item.querySelector(".qty").value || 0);
     amount += price * qty;
   });
-
-  const tax = amount * TAX_RATE;
+  const tax   = amount * TAX_RATE;
   const total = amount + tax;
-
   document.getElementById("amount").textContent = formatPhp(amount);
-  document.getElementById("tax").textContent = formatPhp(tax);
-  document.getElementById("total").textContent = formatPhp(total);
-
+  document.getElementById("tax").textContent    = formatPhp(tax);
+  document.getElementById("total").textContent  = formatPhp(total);
   return { amount, tax, total };
 }
 
@@ -88,22 +460,25 @@ function getOption(item){
   return checked ? checked.value : "";
 }
 
-function createOrderMessage(){
-  const customerName = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const pickupDate = document.getElementById("date").value;
-  const pickupTime = document.getElementById("time").value;
-  const notes = document.getElementById("notes").value;
-  const totals = calculate();
+async function submitOrder(){
+  const customerName = document.getElementById("name").value.trim();
+  const phone        = document.getElementById("phone").value.trim();
+  const pickupDate   = document.getElementById("date").value.trim();
+  const pickupTime   = document.getElementById("time").value;
+  const notes        = document.getElementById("notes").value.trim();
+  const totals       = calculate();
+
+  if(!customerName || !phone || !pickupDate || !pickupTime){
+    alert("Please complete your name, phone number, pickup date, and pickup time.");
+    return;
+  }
 
   const orderLines = [];
-
   document.querySelectorAll(".item").forEach(item => {
     const itemName = item.dataset.name;
-    const price = Number(item.dataset.price);
-    const qty = Number(item.querySelector(".qty").value || 0);
-    const option = getOption(item);
-
+    const price    = Number(item.dataset.price);
+    const qty      = Number(item.querySelector(".qty").value || 0);
+    const option   = getOption(item);
     if(qty > 0){
       const optionText = option ? " / " + option : "";
       orderLines.push(`・${itemName}${optionText} × ${qty} = ${formatPhp(price * qty)}`);
@@ -115,7 +490,9 @@ function createOrderMessage(){
     return;
   }
 
-  const message = `【TERRA Motsunabe Takeout Order】
+  // Show preview message
+  const previewText =
+`【TERRA Motsunabe Takeout Order】
 
 Name: ${customerName}
 Phone: ${phone}
@@ -130,42 +507,61 @@ TAX 12%: ${formatPhp(totals.tax)}
 Total: ${formatPhp(totals.total)}
 
 Notes:
-${notes}
+${notes || "—"}
 
 * Order is confirmed only after our reply.`;
 
   const box = document.getElementById("lineMessage");
   box.style.display = "block";
-  box.textContent = message;
+  box.textContent = previewText;
 
-  sendToSheet({
-    name: customerName,
-    phone: phone,
+  // Disable button & show loading
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+  btn.textContent = "SENDING…";
+
+  const payload = {
+    name:       customerName,
+    phone:      phone,
     pickupDate: pickupDate,
     pickupTime: pickupTime,
-    order: orderLines.join(" | "),
-    amount: Math.round(totals.amount),
-    tax: Math.round(totals.tax),
-    total: Math.round(totals.total),
-    notes: notes
-  });
+    order:      orderLines.join(" | "),
+    amount:     Math.round(totals.amount),
+    tax:        Math.round(totals.tax),
+    total:      Math.round(totals.total),
+    notes:      notes || "—"
+  };
+
+  try {
+    const res = await fetch(WEB_APP_URL, {
+      method:  "POST",
+      headers: { "Content-Type": "text/plain" }, // avoids CORS preflight
+      body:    JSON.stringify(payload)
+    });
+
+    const json = await res.json();
+
+    if(json.result === "success"){
+      // Show success screen
+      document.getElementById("formWrap").style.display = "none";
+      const screen = document.getElementById("successScreen");
+      screen.classList.add("show");
+      document.getElementById("orderNoDisplay").textContent =
+        json.orderNo || "Order Submitted ✔";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      throw new Error("Server error");
+    }
+
+  } catch(err) {
+    console.error(err);
+    btn.disabled    = false;
+    btn.textContent = "SUBMIT ORDER";
+    alert("Error sending order. Please try again or contact us directly.");
+  }
 }
 
-function sendToSheet(data){
-  fetch(WEB_APP_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify(data)
-  })
-  .then(() => {
-    alert("Order submitted successfully!");
-  })
-  .catch(error => {
-    console.error(error);
-    alert("Error sending order.");
-  });
-}
-
+// Qty buttons
 document.querySelectorAll(".plus").forEach(button => {
   button.addEventListener("click", () => {
     const input = button.parentElement.querySelector(".qty");
@@ -186,9 +582,10 @@ document.querySelectorAll(".qty").forEach(input => {
   input.addEventListener("input", calculate);
 });
 
-document.getElementById("submitBtn").addEventListener("click", createOrderMessage);
+document.getElementById("submitBtn").addEventListener("click", submitOrder);
 
 calculate();
 </script>
+
 </body>
 </html>
