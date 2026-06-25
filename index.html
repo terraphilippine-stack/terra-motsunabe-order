@@ -5,85 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Izakaya Terra — Takeout Order</title>
 <style>
-  /* ============================================================
-     IZAKAYA TERRA — Takeout Order Form (Stage 1: form only)
-     Single file. No external libraries. Mobile / iPad first.
-     ============================================================ */
-
   :root{
-    --paper:#F2EDE3;     /* warm washi background */
+    --paper:#F2EDE3;
     --card:#FFFFFF;
-    --ink:#1A1511;       /* sumi ink — main text */
-    --muted:#6E6458;     /* secondary text */
-    --line:#E3DBCC;      /* hairlines */
-    --accent:#C81E22;    /* shu (seal red) — primary actions, prices */
-    --accent-d:#A5161A;  /* shu pressed */
-    --indigo:#1A1511;    /* sumi ink — headers & selected states */
+    --ink:#1A1511;
+    --muted:#6E6458;
+    --line:#E3DBCC;
+    --accent:#C81E22;
+    --accent-d:#A5161A;
+    --indigo:#1A1511;
     --ok:#2E7D52;
     --err:#C0392B;
     --shadow:0 2px 12px rgba(26,21,17,.07);
     --radius:16px;
   }
-
   *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html,body{ margin:0; padding:0; }
   body{
-    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans",
-                "Segoe UI",Roboto,sans-serif;
-    background:var(--paper);
-    color:var(--ink);
-    font-size:18px;            /* large base text */
-    line-height:1.45;
-    padding-bottom:120px;       /* room for sticky bottom bar */
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans","Segoe UI",Roboto,sans-serif;
+    background:var(--paper); color:var(--ink); font-size:18px; line-height:1.45; padding-bottom:120px;
   }
-
-  /* ---------- Brand header + hero ---------- */
-  header{
-    background:#fff; text-align:center;
-    padding:16px 18px 12px; border-bottom:1px solid var(--line);
-  }
+  header{ background:#fff; text-align:center; padding:16px 18px 12px; border-bottom:1px solid var(--line); }
   header .logo{ height:clamp(74px,21vw,104px); width:auto; max-width:82%; object-fit:contain; }
-
   .hero{ position:relative; }
   .hero img{ width:100%; height:min(44vh,340px); object-fit:cover; display:block; }
-  .hero::after{
-    content:""; position:absolute; inset:0;
-    background:linear-gradient(to top, rgba(20,16,12,.80) 0%, rgba(20,16,12,.15) 46%, rgba(20,16,12,0) 72%);
-  }
+  .hero::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(20,16,12,.80) 0%, rgba(20,16,12,.15) 46%, rgba(20,16,12,0) 72%); }
   .hero-cap{ position:absolute; left:0; right:0; bottom:0; z-index:2; padding:0 18px 16px; color:#fff; text-align:center; }
   .hero-jp{ font-size:15px; letter-spacing:.16em; opacity:.92; }
   .hero-cap h1{ margin:4px 0 0; font-size:30px; font-weight:900; letter-spacing:.01em; text-shadow:0 1px 12px rgba(0,0,0,.4); }
   .hero-cap h1::after{ content:""; display:block; width:46px; height:3px; background:var(--accent); border-radius:2px; margin:9px auto 7px; }
   .hero-sub{ font-size:14px; opacity:.92; }
-
   main{ max-width:680px; margin:0 auto; padding:18px 14px 0; }
-
-  .section-title{
-    font-size:14px; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--indigo); font-weight:800; margin:26px 4px 12px;
-    display:flex; align-items:center; gap:10px;
-  }
+  .section-title{ font-size:14px; letter-spacing:.16em; text-transform:uppercase; color:var(--indigo); font-weight:800; margin:26px 4px 12px; display:flex; align-items:center; gap:10px; }
   .section-title::before{ content:""; width:14px; height:14px; background:var(--accent); border-radius:3px; }
-
-  /* ---------- Product card ---------- */
-  .card{
-    background:var(--card); border:1px solid var(--line);
-    border-radius:var(--radius); box-shadow:var(--shadow);
-    padding:16px; margin-bottom:14px;
-  }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px; margin-bottom:14px; }
   .prod-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
   .prod-name{ font-size:20px; font-weight:700; }
   .prod-sub{ font-size:14px; color:var(--muted); }
   .prod-price{ font-size:19px; font-weight:800; color:var(--accent); white-space:nowrap; }
-
-  /* quantity stepper — big tap targets */
   .qty{ display:flex; align-items:center; gap:14px; margin-top:14px; }
-  .qty-btn{
-    width:54px; height:54px; border-radius:14px; border:2px solid var(--line);
-    background:#fff; font-size:30px; font-weight:700; color:var(--indigo);
-    display:flex; align-items:center; justify-content:center; cursor:pointer;
-    user-select:none; transition:transform .05s, background .15s;
-  }
+  .qty-btn{ width:54px; height:54px; border-radius:14px; border:2px solid var(--line); background:#fff; font-size:30px; font-weight:700; color:var(--indigo); display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; transition:transform .05s, background .15s; }
   .qty-btn:active{ transform:scale(.94); }
   .qty-btn.plus{ background:var(--accent); color:#fff; border-color:var(--accent); }
   .qty-btn.plus:active{ background:var(--accent-d); }
@@ -91,86 +52,43 @@
   .qty-num{ font-size:26px; font-weight:800; min-width:42px; text-align:center; }
   .qty-spacer{ flex:1; }
   .line-total{ font-size:17px; font-weight:700; color:var(--muted); }
-
-  /* flavor selector — segmented full-width */
   .flavor{ margin-top:14px; display:none; }
   .flavor.show{ display:block; }
   .flavor-label{ font-size:14px; color:var(--muted); margin-bottom:8px; }
   .flavor.required .flavor-label::after{ content:" *"; color:var(--err); font-weight:800; }
   .seg{ display:flex; gap:10px; }
-  .seg button{
-    flex:1; min-height:52px; border-radius:12px; border:2px solid var(--line);
-    background:#fff; font-size:18px; font-weight:700; color:var(--ink); cursor:pointer;
-  }
+  .seg button{ flex:1; min-height:52px; border-radius:12px; border:2px solid var(--line); background:#fff; font-size:18px; font-weight:700; color:var(--ink); cursor:pointer; }
   .seg button.active{ background:var(--indigo); color:#fff; border-color:var(--indigo); }
   .flavor.err .seg{ outline:2px solid var(--err); outline-offset:3px; border-radius:14px; }
-
-  /* time slot grid */
   .slots{ display:grid; grid-template-columns:repeat(auto-fill, minmax(84px, 1fr)); gap:10px; }
-  .slot{
-    min-height:52px; border-radius:12px; border:2px solid var(--line);
-    background:#fff; font-size:17px; font-weight:700; color:var(--ink); cursor:pointer;
-    transition:transform .05s, background .15s;
-  }
+  .slot{ min-height:52px; border-radius:12px; border:2px solid var(--line); background:#fff; font-size:17px; font-weight:700; color:var(--ink); cursor:pointer; transition:transform .05s, background .15s; }
   .slot:active{ transform:scale(.96); }
   .slot.active{ background:var(--indigo); color:#fff; border-color:var(--indigo); }
   .field.err .slots{ outline:2px solid var(--err); outline-offset:3px; border-radius:14px; }
-
-  /* weekday / weekend badge above the slots */
-  .day-badge{
-    display:inline-block; font-size:14px; font-weight:800; letter-spacing:.03em;
-    padding:7px 14px; border-radius:999px; margin-bottom:12px;
-  }
+  .day-badge{ display:inline-block; font-size:14px; font-weight:800; letter-spacing:.03em; padding:7px 14px; border-radius:999px; margin-bottom:12px; }
   .day-badge.weekday{ background:#EDE7DA; color:var(--ink); }
   .day-badge.weekend{ background:#FBE9E7; color:var(--accent-d); }
-
-  /* ---------- Customer fields ---------- */
   .field{ margin-bottom:14px; }
   .field label{ display:block; font-size:15px; font-weight:700; margin-bottom:6px; }
   .field label .req{ color:var(--err); }
-  .field input, .field textarea{
-    width:100%; font-size:18px; padding:14px; border-radius:12px;
-    border:2px solid var(--line); background:#fff; color:var(--ink);
-    font-family:inherit;
-  }
+  .field input, .field textarea{ width:100%; font-size:18px; padding:14px; border-radius:12px; border:2px solid var(--line); background:#fff; color:var(--ink); font-family:inherit; }
   .field input:focus, .field textarea:focus{ outline:none; border-color:var(--accent); }
   .field.err input, .field.err textarea{ border-color:var(--err); background:#FDF3F1; }
   .field textarea{ min-height:84px; resize:vertical; }
   .field .hint{ font-size:13px; color:var(--muted); margin-top:5px; }
-
   .two{ display:flex; gap:12px; }
   .two .field{ flex:1; }
-
-  /* ---------- Sticky bottom bar ---------- */
-  .bar{
-    position:fixed; left:0; right:0; bottom:0; z-index:30;
-    background:#fff; border-top:1px solid var(--line);
-    box-shadow:0 -3px 14px rgba(43,38,34,.10);
-    padding:12px 14px calc(12px + env(safe-area-inset-bottom));
-  }
+  .bar{ position:fixed; left:0; right:0; bottom:0; z-index:30; background:#fff; border-top:1px solid var(--line); box-shadow:0 -3px 14px rgba(43,38,34,.10); padding:12px 14px calc(12px + env(safe-area-inset-bottom)); }
   .bar-inner{ max-width:680px; margin:0 auto; display:flex; align-items:center; gap:14px; }
   .bar .label{ font-size:13px; color:var(--muted); }
   .bar .total{ font-size:26px; font-weight:900; color:var(--ink); line-height:1; }
   .bar-spacer{ flex:1; }
-  .btn-main{
-    background:var(--accent); color:#fff; border:none; border-radius:14px;
-    padding:16px 26px; font-size:19px; font-weight:800; cursor:pointer;
-    min-height:58px; transition:transform .05s, background .15s;
-  }
+  .btn-main{ background:var(--accent); color:#fff; border:none; border-radius:14px; padding:16px 26px; font-size:19px; font-weight:800; cursor:pointer; min-height:58px; transition:transform .05s, background .15s; }
   .btn-main:active{ transform:scale(.97); background:var(--accent-d); }
   .btn-main[disabled]{ background:#C9C1B4; }
-
-  /* ---------- Confirmation modal ---------- */
-  .overlay{
-    position:fixed; inset:0; z-index:50; background:rgba(43,38,34,.55);
-    display:none; align-items:flex-end; justify-content:center;
-  }
+  .overlay{ position:fixed; inset:0; z-index:50; background:rgba(43,38,34,.55); display:none; align-items:flex-end; justify-content:center; }
   .overlay.show{ display:flex; }
-  .sheet{
-    background:var(--paper); width:100%; max-width:680px;
-    border-radius:22px 22px 0 0; padding:20px 18px calc(22px + env(safe-area-inset-bottom));
-    max-height:90vh; overflow:auto;
-  }
+  .sheet{ background:var(--paper); width:100%; max-width:680px; border-radius:22px 22px 0 0; padding:20px 18px calc(22px + env(safe-area-inset-bottom)); max-height:90vh; overflow:auto; }
   .sheet h2{ margin:2px 0 4px; font-size:22px; color:var(--indigo); }
   .summary-row{ display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--line); font-size:17px; }
   .summary-row .q{ color:var(--muted); }
@@ -178,32 +96,19 @@
   .totals .summary-row{ border:none; padding:5px 0; }
   .totals .grand{ font-size:24px; font-weight:900; border-top:2px solid var(--ink); padding-top:12px; margin-top:6px; }
   .sheet .btn-main{ width:100%; margin-top:18px; }
-  .btn-ghost{
-    width:100%; margin-top:10px; background:transparent; border:2px solid var(--line);
-    color:var(--ink); border-radius:14px; padding:14px; font-size:17px; font-weight:700; cursor:pointer;
-  }
+  .btn-ghost{ width:100%; margin-top:10px; background:transparent; border:2px solid var(--line); color:var(--ink); border-radius:14px; padding:14px; font-size:17px; font-weight:700; cursor:pointer; }
   .done-icon{ font-size:50px; text-align:center; margin:6px 0; }
   .done-msg{ text-align:center; color:var(--muted); font-size:16px; }
-
   @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
-
-  /* orders paused (stop switch) — full screen */
-  .closed-screen{
-    position:fixed; inset:0; z-index:80; background:var(--paper);
-    display:none; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; padding:32px;
-  }
+  .closed-screen{ position:fixed; inset:0; z-index:80; background:var(--paper); display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:32px; }
   .closed-screen.show{ display:flex; }
   .closed-screen .mark{ font-size:56px; }
   .closed-screen h2{ font-size:25px; margin:14px 0 8px; color:var(--ink); }
   .closed-screen p{ font-size:18px; color:var(--muted); max-width:420px; line-height:1.5; }
-
-  /* dev-only build marker (remove before go-live) */
   .build-tag{ text-align:center; color:#B8AD9C; font-size:12px; letter-spacing:.04em; margin:26px 0 6px; }
 </style>
 </head>
 <body>
-
 <header>
   <img class="logo" src="terra_logo.png" alt="Izakaya Terra — 旬の鮮魚と魂の煮込み" />
 </header>
@@ -213,13 +118,13 @@
   <div class="hero-cap">
     <div class="hero-jp">もつ鍋テイクアウト</div>
     <h1>Motsunabe Takeout</h1>
-    <div class="hero-sub">Order ahead · pay &amp; pick up in store</div>
+    <div class="hero-sub">Order ahead &middot; pay &amp; pick up in store</div>
   </div>
 </div>
 
 <main>
   <div class="section-title">Menu</div>
-  <div id="menu"><!-- product cards injected here --></div>
+  <div id="menu"></div>
 
   <div class="section-title">Pickup details</div>
   <div class="card">
@@ -249,7 +154,6 @@
   <div class="build-tag">Terra Order Form · build 2026-06-25-7 (live)</div>
 </main>
 
-<!-- Sticky total + action -->
 <div class="bar">
   <div class="bar-inner">
     <div>
@@ -261,12 +165,10 @@
   </div>
 </div>
 
-<!-- Confirmation sheet -->
 <div class="overlay" id="overlay">
-  <div class="sheet" id="sheet"><!-- filled dynamically --></div>
+  <div class="sheet" id="sheet"></div>
 </div>
 
-<!-- Orders paused (stop switch) -->
 <div class="closed-screen" id="closedScreen">
   <div class="mark">🛑</div>
   <h2>Orders paused</h2>
@@ -274,16 +176,8 @@
 </div>
 
 <script>
-/* ============================================================
-   CONFIG — easy to maintain. Add future products here.
-   ============================================================ */
-
-/* ---- Google Apps Script Web App URL ----
-   Paste the URL you get after deploying Code.gs (it ends with /exec).
-   Leave it empty ('') to run the form in DEMO mode (no saving).        */
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbwy-9L0PmnpTYtYOJYk0DTj1xxB9_6I6EkREDBnWsek4xhByFvA_03davuXfsi7scKu_A/exec';
 
-/* unique key per order attempt — makes retries safe (no duplicate orders) */
 const CLIENT_ID = (window.crypto && crypto.randomUUID)
   ? crypto.randomUUID()
   : (String(Date.now()) + Math.random().toString(16).slice(2));
@@ -297,30 +191,21 @@ const PRODUCTS = [
 ];
 const FLAVORS = ['Miso','Soy Sauce'];
 
-/* ---- VAT settings ----------------------------------------------------
-   Philippine standard: menu prices already INCLUDE 12% VAT.
-   Keep VAT_INCLUSIVE = true  -> Total = menu price (customer pays this).
-   Set it to        = false   -> VAT is ADDED on top (Total = price + 12%).
---------------------------------------------------------------------- */
 const VAT_RATE = 0.12;
 const VAT_INCLUSIVE = true;
 
-/* ---- Pickup time slots ---- adjust to Terra's hours ----
-   Mon–Fri use HOURS.weekday, Sat & Sun use HOURS.weekend.   */
 const HOURS = {
-  weekday: { start:'12:00', end:'22:00' },   // Mon–Fri
-  weekend: { start:'14:00', end:'22:00' },   // Sat & Sun
+  weekday: { start:'12:00', end:'22:00' },
+  weekend: { start:'14:00', end:'22:00' },
 };
-const SLOT_INTERVAL_MIN = 30;      // minutes between slots
-const SAME_DAY_LAST = '19:00';     // latest pickup for SAME-DAY (today) orders — kitchen is busy
+const SLOT_INTERVAL_MIN = 30;
+const SAME_DAY_LAST = '19:00';
 
 const peso = new Intl.NumberFormat('en-PH',{ style:'currency', currency:'PHP' });
 
-/* state: { qty, flavor } per product key */
 const state = {};
 PRODUCTS.forEach(p => state[p.key] = { qty:0, flavor:null });
 
-/* ---------- Build menu ---------- */
 const menuEl = document.getElementById('menu');
 PRODUCTS.forEach(p => {
   const card = document.createElement('div');
@@ -350,12 +235,10 @@ PRODUCTS.forEach(p => {
       </div>` : ''}
   `;
   menuEl.appendChild(card);
-
   const minus = card.querySelector('.minus');
   const plus  = card.querySelector('.plus');
   plus.addEventListener('click', () => changeQty(p.key, +1));
   minus.addEventListener('click', () => changeQty(p.key, -1));
-
   if (p.flavor){
     card.querySelectorAll('.seg button').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -367,17 +250,14 @@ PRODUCTS.forEach(p => {
   }
 });
 
-/* ---------- Quantity logic ---------- */
 function changeQty(key, delta){
   const s = state[key];
   s.qty = Math.max(0, s.qty + delta);
   const card = menuEl.querySelector(`[data-key="${key}"]`);
   const p = PRODUCTS.find(x => x.key === key);
-
   card.querySelector('.qty-num').textContent = s.qty;
   card.querySelector('.minus').disabled = s.qty === 0;
   card.querySelector('.line-total').textContent = s.qty > 0 ? peso.format(p.price * s.qty) : '';
-
   if (p.flavor){
     const fl = card.querySelector('.flavor');
     fl.classList.toggle('show', s.qty > 0);
@@ -386,7 +266,6 @@ function changeQty(key, delta){
   refreshTotals();
 }
 
-/* ---------- Totals ---------- */
 function computeTotals(subtotal){
   if (VAT_INCLUSIVE){
     const total  = subtotal;
@@ -408,7 +287,6 @@ function refreshTotals(){
   document.getElementById('reviewBtn').disabled = t.total <= 0;
 }
 
-/* ---------- Pickup time slots ---------- */
 let selectedTime = null;
 const slotsEl = document.getElementById('slots');
 const slotsHintEl = document.getElementById('slotsHint');
@@ -416,18 +294,12 @@ const dayBadgeEl = document.getElementById('dayBadge');
 
 function pad(n){ return String(n).padStart(2,'0'); }
 function localDateStr(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
-
-function dayOfWeek(dateStr){
-  const [y,m,d] = dateStr.split('-').map(Number);
-  return new Date(y, m-1, d).getDay();           // 0=Sun ... 6=Sat
-}
+function dayOfWeek(dateStr){ const [y,m,d] = dateStr.split('-').map(Number); return new Date(y, m-1, d).getDay(); }
 function allSlots(start, end){
   const [sh,sm] = start.split(':').map(Number);
   const [eh,em] = end.split(':').map(Number);
   const out = [];
-  for (let m = sh*60+sm; m <= eh*60+em; m += SLOT_INTERVAL_MIN){
-    out.push(`${pad(Math.floor(m/60))}:${pad(m%60)}`);
-  }
+  for (let m = sh*60+sm; m <= eh*60+em; m += SLOT_INTERVAL_MIN){ out.push(`${pad(Math.floor(m/60))}:${pad(m%60)}`); }
   return out;
 }
 
@@ -436,20 +308,13 @@ function renderSlots(){
   const now = new Date();
   const isToday = dateVal === localDateStr(now);
   const nowHM = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-
   const isWeekend = (dayOfWeek(dateVal) === 0 || dayOfWeek(dateVal) === 6);
   const { start, end } = isWeekend ? HOURS.weekend : HOURS.weekday;
   dayBadgeEl.textContent = `${isWeekend ? 'Weekend' : 'Weekday'} · ${start}–${end}`;
   dayBadgeEl.className = 'day-badge ' + (isWeekend ? 'weekend' : 'weekday');
   let avail = allSlots(start, end);
-  if (isToday){
-    // same-day: only future times, and no later than SAME_DAY_LAST (kitchen is busy)
-    avail = avail.filter(t => t > nowHM && t <= SAME_DAY_LAST);
-  }
-
-  // drop a previously chosen time that is no longer available
+  if (isToday){ avail = avail.filter(t => t > nowHM && t <= SAME_DAY_LAST); }
   if (selectedTime && !avail.includes(selectedTime)) selectedTime = null;
-
   slotsEl.innerHTML = '';
   avail.forEach(t => {
     const b = document.createElement('button');
@@ -463,7 +328,6 @@ function renderSlots(){
     });
     slotsEl.appendChild(b);
   });
-
   if (avail.length === 0){
     slotsHintEl.textContent = 'No pickup times left today. Please choose another date.';
     slotsHintEl.style.color = 'var(--err)';
@@ -475,8 +339,8 @@ function renderSlots(){
     slotsHintEl.style.color = 'var(--muted)';
   }
 }
-
-/* ---------- Validation + Review ---------- */
+</script>
+<script>
 function clearErrors(){
   document.querySelectorAll('.field.err').forEach(e => e.classList.remove('err'));
   document.querySelectorAll('.flavor.err').forEach(e => e.classList.remove('err'));
@@ -484,8 +348,6 @@ function clearErrors(){
 function validate(){
   clearErrors();
   const problems = [];
-
-  // flavors required for chosen flavored items
   PRODUCTS.filter(p => p.flavor).forEach(p => {
     if (state[p.key].qty > 0 && !state[p.key].flavor){
       const card = menuEl.querySelector(`[data-key="${p.key}"]`);
@@ -493,7 +355,6 @@ function validate(){
       problems.push(`Choose a flavor for ${p.name}`);
     }
   });
-
   const checks = [
     ['name',  document.getElementById('name').value.trim(),  'Name'],
     ['phone', document.getElementById('phone').value.trim(), 'Phone number'],
@@ -518,9 +379,7 @@ function buildPayload(){
     unitPrice:p.price, flavor:state[p.key].flavor,
     lineTotal:p.price * state[p.key].qty,
   }));
-  const orderText = items.map(i =>
-    `${i.name} x${i.qty}${i.flavor ? ` (${i.flavor})` : ''}`
-  ).join('; ');
+  const orderText = items.map(i => `${i.name} x${i.qty}${i.flavor ? ` (${i.flavor})` : ''}`).join('; ');
   const t = computeTotals(currentSubtotal());
   return {
     name:  document.getElementById('name').value.trim(),
@@ -535,14 +394,12 @@ function buildPayload(){
 }
 const round2 = n => Math.round(n * 100) / 100;
 
-/* ---------- Review sheet ---------- */
 const overlay = document.getElementById('overlay');
 const sheet   = document.getElementById('sheet');
 
 document.getElementById('reviewBtn').addEventListener('click', () => {
   const problems = validate();
   if (problems.length){
-    // scroll to first error
     const firstErr = document.querySelector('.field.err, .flavor.err');
     if (firstErr) firstErr.scrollIntoView({ behavior:'smooth', block:'center' });
     return;
@@ -557,7 +414,6 @@ function openReview(payload){
       <span>${i.name}${i.flavor ? ` · ${i.flavor}` : ''} <span class="q">×${i.qty}</span></span>
       <span>${peso.format(i.lineTotal)}</span>
     </div>`).join('');
-
   sheet.innerHTML = `
     <h2>Review your order</h2>
     ${rows}
@@ -566,12 +422,9 @@ function openReview(payload){
       <div class="summary-row"><span class="q">VAT 12%</span><span>${peso.format(t.vat)}</span></div>
       <div class="summary-row grand"><span>Total</span><span>${peso.format(t.total)}</span></div>
     </div>
-    <div class="summary-row" style="border:none;margin-top:14px">
-      <span class="q">Name</span><span>${esc(payload.name)}</span></div>
-    <div class="summary-row" style="border:none;padding-top:0">
-      <span class="q">Phone</span><span>${esc(payload.phone)}</span></div>
-    <div class="summary-row" style="border:none;padding-top:0">
-      <span class="q">Pickup</span><span>${esc(payload.pickupDate)} · ${esc(payload.pickupTime)}</span></div>
+    <div class="summary-row" style="border:none;margin-top:14px"><span class="q">Name</span><span>${esc(payload.name)}</span></div>
+    <div class="summary-row" style="border:none;padding-top:0"><span class="q">Phone</span><span>${esc(payload.phone)}</span></div>
+    <div class="summary-row" style="border:none;padding-top:0"><span class="q">Pickup</span><span>${esc(payload.pickupDate)} · ${esc(payload.pickupTime)}</span></div>
     ${payload.notes ? `<div class="summary-row" style="border:none;padding-top:0"><span class="q">Notes</span><span>${esc(payload.notes)}</span></div>` : ''}
     <button class="btn-main" id="confirmBtn">Place order</button>
     <button class="btn-ghost" id="backBtn">Back</button>
@@ -584,16 +437,10 @@ function closeReview(){ overlay.classList.remove('show'); }
 overlay.addEventListener('click', e => { if (e.target === overlay) closeReview(); });
 const esc = s => String(s).replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
 
-/* ============================================================
-   submitOrder — sends the order to Google Apps Script.
-   DEMO mode (GAS_URL empty): just shows a local confirmation.
-   ============================================================ */
 async function submitOrder(payload){
-  if (!GAS_URL){ renderDone(null, true); return; }      // demo mode
-
+  if (!GAS_URL){ renderDone(null, true); return; }
   const btn = document.getElementById('confirmBtn');
   if (btn){ btn.disabled = true; btn.textContent = 'Sending…'; }
-
   try {
     const res = await fetch(GAS_URL, {
       method: 'POST',
@@ -615,13 +462,12 @@ function renderDone(orderNo, demo){
     <h2 style="text-align:center">${demo ? 'Order ready (demo)' : 'Order received!'}</h2>
     ${orderNo ? `<p style="text-align:center;font-size:22px;font-weight:900;color:var(--ink);margin:6px 0">${orderNo}</p>` : ''}
     <p class="done-msg">${demo
-      ? 'Demo mode — not connected to Google Sheets yet. Paste your GAS_URL in index.html to go live.'
+      ? 'Demo mode — not connected to Google Sheets yet.'
       : 'Thank you! Your order was sent to Izakaya Terra. Please pay &amp; pick up in store.'}</p>
     <button class="btn-main" id="newBtn">New order</button>
   `;
   document.getElementById('newBtn').addEventListener('click', () => location.reload());
 }
-
 function renderError(){
   sheet.innerHTML = `
     <div class="done-icon">⚠️</div>
@@ -633,7 +479,6 @@ function renderError(){
   document.getElementById('retryBtn').addEventListener('click', () => openReview(buildPayload()));
   document.getElementById('cancelBtn').addEventListener('click', closeReview);
 }
-
 function renderClosedSheet(message){
   sheet.innerHTML = `
     <div class="done-icon">🛑</div>
@@ -644,27 +489,24 @@ function renderClosedSheet(message){
   document.getElementById('closeBtn').addEventListener('click', closeReview);
 }
 
-/* ---------- Order availability (stop switch) ---------- */
 async function checkAvailability(){
-  if (!GAS_URL) return;                       // demo mode: skip
+  if (!GAS_URL) return;
   try {
     const res = await fetch(GAS_URL + '?t=' + Date.now(), { method:'GET' });
     const data = await res.json();
     if (!data.orderOpen) showClosed(data.message);
   } catch (err){
-    showClosed('');                           // SAFE SIDE (B): can't confirm -> closed
+    showClosed('');
   }
 }
 function showClosed(message){
-  document.getElementById('closedMsg').textContent =
-    message || 'Takeout orders are temporarily unavailable.';
+  document.getElementById('closedMsg').textContent = message || 'Takeout orders are temporarily unavailable.';
   document.getElementById('closedScreen').classList.add('show');
 }
 
-/* ---------- Init ---------- */
 (function init(){
   const dateEl = document.getElementById('date');
-  const iso = localDateStr(new Date());   // today, local time (PH-safe)
+  const iso = localDateStr(new Date());
   dateEl.min = iso;
   dateEl.value = iso;
   dateEl.addEventListener('change', renderSlots);
