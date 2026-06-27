@@ -146,12 +146,17 @@
       <div class="slots" id="slots"></div>
       <div class="hint" id="slotsHint"></div>
     </div>
+    <div class="field" data-f="email">
+      <label>Email</label>
+      <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com (optional)" />
+      <div class="hint">Add your email to get order updates — a confirmation, and a message when your order is ready for pickup.</div>
+    </div>
     <div class="field">
       <label>Notes</label>
       <textarea id="notes" placeholder="Allergies, special requests, etc. (optional)"></textarea>
     </div>
   </div>
-  <div class="build-tag">Terra Order Form · build 2026-06-25-7 (live)</div>
+  <div class="build-tag">Terra Order Form · build 2026-06-25-8 (live)</div>
 </main>
 
 <div class="bar">
@@ -387,6 +392,7 @@ function buildPayload(){
     pickupDate: document.getElementById('date').value,
     pickupTime: selectedTime,
     notes: document.getElementById('notes').value.trim(),
+    email: document.getElementById('email').value.trim(),
     items, orderText,
     amount: round2(t.amount), vat: round2(t.vat), total: round2(t.total),
     clientId: CLIENT_ID,
@@ -425,6 +431,7 @@ function openReview(payload){
     <div class="summary-row" style="border:none;margin-top:14px"><span class="q">Name</span><span>${esc(payload.name)}</span></div>
     <div class="summary-row" style="border:none;padding-top:0"><span class="q">Phone</span><span>${esc(payload.phone)}</span></div>
     <div class="summary-row" style="border:none;padding-top:0"><span class="q">Pickup</span><span>${esc(payload.pickupDate)} · ${esc(payload.pickupTime)}</span></div>
+    ${payload.email ? `<div class="summary-row" style="border:none;padding-top:0"><span class="q">Email</span><span>${esc(payload.email)}</span></div>` : ''}
     ${payload.notes ? `<div class="summary-row" style="border:none;padding-top:0"><span class="q">Notes</span><span>${esc(payload.notes)}</span></div>` : ''}
     <button class="btn-main" id="confirmBtn">Place order</button>
     <button class="btn-ghost" id="backBtn">Back</button>
